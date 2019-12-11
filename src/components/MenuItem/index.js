@@ -5,7 +5,7 @@ import { Modal, TextField, Button } from '@material-ui/core';
 // Styles
 import './index.scss';
 
-const MenuItem = ({ name, price, type, onAddToMenu }) => {
+const MenuItem = ({ name, price, type, onAddToOrder }) => {
   const [isAdditionalsModalOpen, setIsAdditionalsModalOpen] = useState(false);
   const [eggPieces, setEggPieces] = useState(0);
   const [cheesePieces, setCheesePieces] = useState(0);
@@ -14,7 +14,7 @@ const MenuItem = ({ name, price, type, onAddToMenu }) => {
     if (type && type === 'withAdditionals') {
       setIsAdditionalsModalOpen(true);
     } else {
-      onAddToMenu({
+      onAddToOrder({
         name: name,
         price: price,
       });
@@ -22,21 +22,28 @@ const MenuItem = ({ name, price, type, onAddToMenu }) => {
   }
 
   const handleAddMenuItemWithAdditionals = () => {
-    onAddToMenu({
+    const additionals = [];
+
+    if (eggPieces) {
+      additionals.push({
+        name: 'Huevo',
+        price: 1,
+        amount: eggPieces,
+      });
+    }
+
+    if (cheesePieces) {
+      additionals.push({
+        name: 'Queso',
+        price: 1,
+        amount: cheesePieces,
+      });
+    }
+
+    onAddToOrder({
       name: name,
       price: price,
-      additionals: [
-        {
-          name: 'Huevo',
-          price: 1,
-          amount: eggPieces,
-        },
-        {
-          name: 'Queso',
-          price: 1,
-          amount: cheesePieces,
-        }
-      ],
+      additionals,
     });
   }
 

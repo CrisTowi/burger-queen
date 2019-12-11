@@ -1,12 +1,16 @@
 // Libraries
 import React from 'react'
-import { Tabs, Tab, Paper, Grid } from '@material-ui/core';
+import { Tabs, Tab, Paper } from '@material-ui/core';
 
-// Components
-import MenuItem from '../../components/MenuItem';
+// Containers
+import Menu from '../Menu';
+import Order from '../Order';
 
 // Utils
 import { breakfastMenu, restOfheDayMenu } from '../../utils/menus';
+
+// Styles
+import './index.scss';
 
 class ClientPage extends React.Component {
   constructor(props) {
@@ -14,7 +18,8 @@ class ClientPage extends React.Component {
 
     this.state = {
       currentTab: 0,
-      menuStatus: [],
+      orderState: [],
+      isOrderStateOpen: false,
     };
   }
 
@@ -24,17 +29,33 @@ class ClientPage extends React.Component {
     });
   }
 
-  handleAddToMenu = (item) => {
+  handleAddToOrder = (item) => {
     this.setState((prevState) => {
-      const { menuStatus } = prevState;
-      menuStatus.push(item);
+      const { orderState } = prevState;
+      orderState.push(item);
 
-      return { menuStatus };
+      return { orderState };
     })
   }
 
+  toggleOrderSelectOpen = () => {
+    this.setState((prevState) => {
+      const { isOrderStateOpen } = prevState;
+
+      return { isOrderStateOpen: !isOrderStateOpen };
+    });
+  }
+
+  handleRemoveOrderItem = (index) => {
+    this.setState((prevState) => {
+      const { orderState } = prevState;
+
+      return { orderState: orderState.filter((_, i) => i !== index) };
+    });
+  }
+
   render() {
-    const { currentTab, menuStatus } = this.state;
+    const { currentTab, orderState, isOrderStateOpen } = this.state;
     let menuToShow;
 
     if (currentTab === 0) {
@@ -45,6 +66,11 @@ class ClientPage extends React.Component {
 
     return (
       <>
+        <div
+          onClick={this.toggleOrderSelectOpen}
+          className="menu-status-button">
+          
+        </div>
         <Paper square>
           <Tabs
             value={currentTab}
@@ -57,13 +83,13 @@ class ClientPage extends React.Component {
             <Tab label="Almuerzo y cena" />
           </Tabs>
         </Paper>
-        <Grid container spacing={3}>
-          { menuToShow.map((menuItem) => (
-            <Grid item xs={3}>
-              <MenuItem {...menuItem} onAddToMenu={this.handleAddToMenu} />
-            </Grid>
-          )) }
-        </Grid>
+        <Menu
+          menuToShow={menuToShow}
+          handleAddToOrder={this.handleAddToOrder} />
+        <Order
+          isOpen={isOrderStateOpen}
+          orderState={orderState}
+          onRemoveItem={this.handleRemoveOrderItem} />
       </>
     )
   }
