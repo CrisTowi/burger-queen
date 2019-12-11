@@ -2,12 +2,12 @@
 import React from 'react'
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
-import { Drawer, List, ListItem, ListItemText } from '@material-ui/core';
+import { Drawer, List, ListItem, ListItemText, Button } from '@material-ui/core';
 
 // Styles
 import './index.scss';
 
-const Order = ({ isOpen, orderState, onRemoveItem, onCloseOrder }) => {
+const Order = ({ isOpen, orderState, onRemoveItem, onCloseOrder, onRegisterOrder, loading }) => {
   return (
     <Drawer
       className={'drawer'}
@@ -43,6 +43,9 @@ const Order = ({ isOpen, orderState, onRemoveItem, onCloseOrder }) => {
             );
           }) }
         </List>
+        <Button disabled={orderState.length === 0 || loading} variant="contained" color="primary" onClick={onRegisterOrder}>
+          Registrar orden
+        </Button>
     </Drawer>
   )
 }

@@ -45,6 +45,9 @@ const MenuItem = ({ name, price, type, onAddToOrder }) => {
       price: price,
       additionals,
     });
+    setIsAdditionalsModalOpen(false);
+    setEggPieces(0);
+    setCheesePieces(0);
   }
 
   return (

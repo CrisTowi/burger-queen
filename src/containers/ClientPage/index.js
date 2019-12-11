@@ -1,5 +1,6 @@
 // Libraries
-import React from 'react'
+import React from 'react';
+import firebase from 'firebase';
 import { Tabs, Tab, Paper, AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -21,6 +22,7 @@ class ClientPage extends React.Component {
       currentTab: 0,
       orderState: [],
       isOrderStateOpen: false,
+      loading: false,
     };
   }
 
@@ -55,8 +57,29 @@ class ClientPage extends React.Component {
     });
   }
 
+  handleRegisterOrder = async () => {
+    const { orderState } = this.state;
+    this.setState({ loading: true });
+
+    try {
+      await firebase.database().ref('/orders').push({
+        client: 1,
+        order: orderState,
+      });
+
+      this.setState({
+        currentTab: 0,
+        orderState: [],
+        isOrderStateOpen: false,
+        loading: false,
+      });
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   render() {
-    const { currentTab, orderState, isOrderStateOpen } = this.state;
+    const { currentTab, orderState, isOrderStateOpen, loading } = this.state;
     let menuToShow;
 
     if (currentTab === 0) {
@@ -107,10 +130,12 @@ class ClientPage extends React.Component {
           menuToShow={menuToShow}
           handleAddToOrder={this.handleAddToOrder} />
         <Order
-          onCloseOrder={this.toggleOrderSelectOpen}
+          loading={loading}
           isOpen={isOrderStateOpen}
           orderState={orderState}
-          onRemoveItem={this.handleRemoveOrderItem} />
+          onCloseOrder={this.toggleOrderSelectOpen}
+          onRemoveItem={this.handleRemoveOrderItem}
+          onRegisterOrder={this.handleRegisterOrder} />
       </>
     )
   }
