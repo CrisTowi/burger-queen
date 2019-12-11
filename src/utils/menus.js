@@ -20,27 +20,33 @@ export const breakfastMenu = [
 export const restOfheDayMenu = [
   {
     name: 'Hamburguesa de res (Simple)',
-    price: 10
+    price: 10,
+    type: 'withAdditionals',
   },
   {
     name: 'Hamburguesa pollo (Simple)',
-    price: 10
+    price: 10,
+    type: 'withAdditionals',
   },
   {
     name: 'Hamburguesa vegetariana (Simple)',
-    price: 10
+    price: 10,
+    type: 'withAdditionals',
   },
   {
     name: 'Hamburguesa de res (Doble)',
-    price: 15
+    price: 15,
+    type: 'withAdditionals',
   },
   {
     name: 'Hamburguesa pollo (Doble)',
-    price: 15
+    price: 15,
+    type: 'withAdditionals',
   },
   {
     name: 'Hamburguesa vegetariana (Doble)',
-    price: 15
+    price: 15,
+    type: 'withAdditionals',
   },
   {
     name: 'Papas fritas',

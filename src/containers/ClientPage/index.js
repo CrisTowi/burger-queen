@@ -13,7 +13,8 @@ class ClientPage extends React.Component {
     super(props);
 
     this.state = {
-      currentTab: 0
+      currentTab: 0,
+      menuStatus: [],
     };
   }
 
@@ -23,8 +24,17 @@ class ClientPage extends React.Component {
     });
   }
 
+  handleAddToMenu = (item) => {
+    this.setState((prevState) => {
+      const { menuStatus } = prevState;
+      menuStatus.push(item);
+
+      return { menuStatus };
+    })
+  }
+
   render() {
-    const { currentTab } = this.state;
+    const { currentTab, menuStatus } = this.state;
     let menuToShow;
 
     if (currentTab === 0) {
@@ -50,7 +60,7 @@ class ClientPage extends React.Component {
         <Grid container spacing={3}>
           { menuToShow.map((menuItem) => (
             <Grid item xs={3}>
-              <MenuItem {...menuItem} />
+              <MenuItem {...menuItem} onAddToMenu={this.handleAddToMenu} />
             </Grid>
           )) }
         </Grid>
