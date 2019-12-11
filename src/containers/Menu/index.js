@@ -7,9 +7,9 @@ import MenuItem from '../../components/MenuItem';
 
 const Menu = ({ menuToShow, handleAddToOrder}) => {
   return (
-    <Grid container spacing={3}>
+    <Grid style={{ padding: '15px' }} container spacing={3}>
       { menuToShow.map((menuItem) => (
-        <Grid item xs={2}>
+        <Grid item md={2} sm={4} xs={12}>
           <MenuItem {...menuItem} onAddToOrder={handleAddToOrder} />
         </Grid>
       )) }

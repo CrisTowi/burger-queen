@@ -7,9 +7,25 @@
   }
 
   &-title {
-    width: 570px;
     padding: 15px;
     font-size: 20px;
     font-weight: 600;
+  }
+  
+  &-header {
+    width: 570px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-header {
+    width: 570px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-header-icon {
+    cursor: pointer;
+    margin: 15px;
   }
 }

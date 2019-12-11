@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react'
-import { Tabs, Tab, Paper } from '@material-ui/core';
+import { Tabs, Tab, Paper, AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 
 // Containers
 import Menu from '../Menu';
@@ -66,12 +67,31 @@ class ClientPage extends React.Component {
 
     return (
       <>
-        <div
-          onClick={this.toggleOrderSelectOpen}
-          className="menu-status-button">
-          
-        </div>
-        <Paper square>
+        <AppBar
+          position="fixed"
+        >
+          <Toolbar>
+            <Typography variant="h6" noWrap>
+              Burger Qeen
+            </Typography>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={this.toggleOrderSelectOpen}
+              >
+                <div className="order-button-container">
+                  <div className="order-counter">
+                  <Typography noWrap>
+                    {orderState.length}
+                  </Typography>
+                  </div>
+                  <MenuIcon />
+                </div>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Paper style={{ marginTop: '65px' }} square>
           <Tabs
             value={currentTab}
             indicatorColor="primary"
@@ -87,6 +107,7 @@ class ClientPage extends React.Component {
           menuToShow={menuToShow}
           handleAddToOrder={this.handleAddToOrder} />
         <Order
+          onCloseOrder={this.toggleOrderSelectOpen}
           isOpen={isOrderStateOpen}
           orderState={orderState}
           onRemoveItem={this.handleRemoveOrderItem} />
