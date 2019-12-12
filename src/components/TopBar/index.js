@@ -1,10 +1,19 @@
 // Libraries
 import React from 'react';
+import firebase from 'firebase';
 import { withRouter } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
+// Styles
+import './index.scss';
+
 const TopBar = ({ onClickOrderButton, orderCount, location: { pathname } }) => {
+  const handleLogout = () => {
+    firebase.auth().signOut();
+    window.location.href = '/login';
+  }
+
   return (
     <AppBar
       position="fixed"
@@ -44,6 +53,11 @@ const TopBar = ({ onClickOrderButton, orderCount, location: { pathname } }) => {
             </IconButton>
           )
         }
+        <div className="logout-button" onClick={handleLogout}>
+          <Typography variant="h6" noWrap>
+            Cerrar sesión
+          </Typography>
+        </div>
       </Toolbar>
     </AppBar>
   )
