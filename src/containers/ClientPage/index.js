@@ -1,12 +1,14 @@
 // Libraries
 import React from 'react';
 import firebase from 'firebase';
-import { Tabs, Tab, Paper, AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { Tabs, Tab, Paper } from '@material-ui/core';
 
 // Containers
 import Menu from '../Menu';
 import Order from '../Order';
+
+// Components
+import TopBar from '../../components/TopBar';
 
 // Utils
 import { breakfastMenu, restOfheDayMenu } from '../../utils/menus';
@@ -90,30 +92,9 @@ class ClientPage extends React.Component {
 
     return (
       <>
-        <AppBar
-          position="fixed"
-        >
-          <Toolbar>
-            <Typography variant="h6" noWrap>
-              Burger Qeen
-            </Typography>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={this.toggleOrderSelectOpen}
-              >
-                <div className="order-button-container">
-                  <div className="order-counter">
-                  <Typography noWrap>
-                    {orderState.length}
-                  </Typography>
-                  </div>
-                  <MenuIcon />
-                </div>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+        <TopBar
+          orderCount={orderState.length}
+          onClickOrderButton={this.toggleOrderSelectOpen} />
         <Paper style={{ marginTop: '65px' }} square>
           <Tabs
             value={currentTab}

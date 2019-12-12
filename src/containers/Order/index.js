@@ -2,12 +2,14 @@
 import React from 'react'
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
-import { Drawer, List, ListItem, ListItemText, Button } from '@material-ui/core';
+import { Drawer, List, ListItem, ListItemText, Button, Typography } from '@material-ui/core';
 
 // Styles
 import './index.scss';
 
 const Order = ({ isOpen, orderState, onRemoveItem, onCloseOrder, onRegisterOrder, loading }) => {
+  let totalPrice = 0;
+
   return (
     <Drawer
       className={'drawer'}
@@ -25,24 +27,31 @@ const Order = ({ isOpen, orderState, onRemoveItem, onCloseOrder, onRegisterOrder
         <List>
           { orderState.map((orderItem, index) => {
             const additionalString = '';
+            let price = orderItem.price;
             
             if (orderItem.additionals) {
               orderItem.additionals.reduce((prevVal, additional) => {
                 prevVal += `${additional.name} (x${additional.amount}) `;
-  
+                price += 1;
+                
                 return prevVal;
               }, '');
             }
 
+            totalPrice += price;
+
             return (
-              <ListItem button className={'drawer-item'}>
+              <ListItem key={`order-item-${index}`} button className={'drawer-item'}>
                 <ListItemText
-                  primary={`${orderItem.name} ${additionalString}`} />
+                  primary={`${orderItem.name} ${additionalString} $${price}`} />
                 <DeleteIcon onClick={onRemoveItem.bind(null, index)} />
               </ListItem>
             );
           }) }
         </List>
+        <Typography style={{ padding: '15px' }}>
+          Total: ${totalPrice}
+        </Typography>
         <Button disabled={orderState.length === 0 || loading} variant="contained" color="primary" onClick={onRegisterOrder}>
           Registrar orden
         </Button>

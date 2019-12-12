@@ -57,7 +57,7 @@ const MenuItem = ({ name, price, type, onAddToOrder }) => {
           {name}
         </div>
         <div className="menu-item-price">
-          {price}
+          ${price}
         </div>
       </div>
       <Modal

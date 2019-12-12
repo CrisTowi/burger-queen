@@ -5,6 +5,7 @@ import firebase from 'firebase';
 
 // Components
 import ClientPage from './containers/ClientPage';
+import ChefPage from './containers/ChefPage';
 
 // Styles
 import './App.css';
@@ -19,6 +20,9 @@ function App() {
       <Switch>
         <Route path="/client">
           <ClientPage />
+        </Route>
+        <Route path="/chef">
+          <ChefPage />
         </Route>
       </Switch>
     </BrowserRouter>
