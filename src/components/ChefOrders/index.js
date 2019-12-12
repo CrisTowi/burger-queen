@@ -21,7 +21,12 @@ const ChefOrders = ({ orders, onAttendOrder }) => {
           id: key,
           ...orders[key]
         })} className="chef-order-item">
-          {key}
+          <div>
+            Orden de {orders[key].client}
+          </div>
+          <div>
+            {orders[key].createdAt}
+          </div>
         </div>
       </Grid>
     );

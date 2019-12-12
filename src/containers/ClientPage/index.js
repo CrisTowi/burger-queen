@@ -12,6 +12,7 @@ import TopBar from '../../components/TopBar';
 
 // Utils
 import { breakfastMenu, restOfheDayMenu } from '../../utils/menus';
+import { formatDate } from '../../utils/format';
 
 // Styles
 import './index.scss';
@@ -66,6 +67,7 @@ class ClientPage extends React.Component {
 
     try {
       await firebase.database().ref('/orders').push({
+        createdAt: formatDate(new Date()),
         client: clientName,
         order: orderState,
       });

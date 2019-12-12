@@ -12,7 +12,7 @@ const OrderHistory = ({ isOpen, attendedOrders, onCloseOrderHistory }) => {
     componentAttendedOrders.push(
       <ListItem key={`attended-order-item-${key}`} button className={'drawer-item'}>
         <ListItemText
-          primary={`${attendedOrders[key].id}`} />
+          primary={`Orden de ${attendedOrders[key].client} - ${attendedOrders[key].createdAt}`} />
       </ListItem>
     );
   }
