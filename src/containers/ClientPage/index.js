@@ -23,6 +23,7 @@ class ClientPage extends React.Component {
     this.state = {
       currentTab: 0,
       orderState: [],
+      clientName: null,
       isOrderStateOpen: false,
       loading: false,
     };
@@ -60,12 +61,12 @@ class ClientPage extends React.Component {
   }
 
   handleRegisterOrder = async () => {
-    const { orderState } = this.state;
+    const { orderState, clientName } = this.state;
     this.setState({ loading: true });
 
     try {
       await firebase.database().ref('/orders').push({
-        client: 1,
+        client: clientName,
         order: orderState,
       });
 
@@ -80,8 +81,12 @@ class ClientPage extends React.Component {
     }
   }
 
+  handleClientNameChange = async (e) => {
+    this.setState({ clientName: e.target.value })
+  }
+
   render() {
-    const { currentTab, orderState, isOrderStateOpen, loading } = this.state;
+    const { currentTab, orderState, isOrderStateOpen, clientName, loading } = this.state;
     let menuToShow;
 
     if (currentTab === 0) {
@@ -114,6 +119,8 @@ class ClientPage extends React.Component {
           loading={loading}
           isOpen={isOrderStateOpen}
           orderState={orderState}
+          clientName={clientName}
+          onClientNameChange={this.handleClientNameChange}
           onCloseOrder={this.toggleOrderSelectOpen}
           onRemoveItem={this.handleRemoveOrderItem}
           onRegisterOrder={this.handleRegisterOrder} />

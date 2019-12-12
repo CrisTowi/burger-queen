@@ -2,12 +2,28 @@
 import React from 'react'
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
-import { Drawer, List, ListItem, ListItemText, Button, Typography } from '@material-ui/core';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  Typography,
+  TextField,
+} from '@material-ui/core';
 
 // Styles
 import './index.scss';
 
-const Order = ({ isOpen, orderState, onRemoveItem, onCloseOrder, onRegisterOrder, loading }) => {
+const Order = ({
+  isOpen,
+  orderState,
+  onRemoveItem,
+  onCloseOrder,
+  onRegisterOrder,
+  onClientNameChange,
+  clientName,
+  loading, }) => {
   let totalPrice = 0;
 
   return (
@@ -52,7 +68,13 @@ const Order = ({ isOpen, orderState, onRemoveItem, onCloseOrder, onRegisterOrder
         <Typography style={{ padding: '15px' }}>
           Total: ${totalPrice}
         </Typography>
-        <Button disabled={orderState.length === 0 || loading} variant="contained" color="primary" onClick={onRegisterOrder}>
+        <TextField
+          onChange={onClientNameChange}
+          type="text"
+          label="Nombre del cliente"
+          variant="outlined"
+          style={{ width: '100%', marginBottom: '15px' }} />
+        <Button disabled={!clientName || orderState.length === 0 || loading} variant="contained" color="primary" onClick={onRegisterOrder}>
           Registrar orden
         </Button>
     </Drawer>
