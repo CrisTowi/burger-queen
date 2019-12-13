@@ -2,6 +2,7 @@
 import React from 'react';
 import firebase from 'firebase';
 import { Tabs, Tab, Paper } from '@material-ui/core';
+import { withSnackbar } from 'notistack';
 
 // Containers
 import Menu from '../Menu';
@@ -30,12 +31,24 @@ class ClientPage extends React.Component {
     };
   }
 
-  handleChange = (_, newTab) => {
+  /**
+   * Triggered when user clicks on a new tab and set it as
+   * the current active tab
+   *
+   * @memberof ClientPage
+   */
+  handleTabChange = (_, newTabIndex) => {
     this.setState({
-      currentTab: newTab
+      currentTab: newTabIndex,
     });
   }
 
+  /**
+   * Triggered when user clicks on a new menu item for the 
+   * order
+   * 
+   * @memberof ClientPage
+   */
   handleAddToOrder = (item) => {
     this.setState((prevState) => {
       const { orderState } = prevState;
@@ -45,6 +58,13 @@ class ClientPage extends React.Component {
     })
   }
 
+  /**
+   * Handles the toggle logic to hide and show the order
+   * status and show it if it is hidden and hides it if it 
+   * is visible
+   *
+   * @memberof ClientPage
+   */
   toggleOrderSelectOpen = () => {
     this.setState((prevState) => {
       const { isOrderStateOpen } = prevState;
@@ -53,6 +73,12 @@ class ClientPage extends React.Component {
     });
   }
 
+  /**
+   * Triggered when user clicks on the delete item from an order
+   * and delete it from the order state
+   *
+   * @memberof ClientPage
+   */
   handleRemoveOrderItem = (index) => {
     this.setState((prevState) => {
       const { orderState } = prevState;
@@ -61,8 +87,15 @@ class ClientPage extends React.Component {
     });
   }
 
+  /**
+   * Triggered when the user wants to register a new order and set the state
+   * to an initial state
+   *
+   * @memberof ClientPage
+   */
   handleRegisterOrder = async () => {
     const { orderState, clientName } = this.state;
+    const { enqueueSnackbar } = this.props;
     this.setState({ loading: true });
 
     try {
@@ -77,12 +110,20 @@ class ClientPage extends React.Component {
         orderState: [],
         isOrderStateOpen: false,
         loading: false,
+        clientName: null
+      }, () => {
+        enqueueSnackbar("¡Order agregada con éxito!", { variant: 'success' });
       });
     } catch (error) {
-      console.error(error)
+      enqueueSnackbar("Error al agregar la orden, intente más tarde.", { variant: 'error' });
     }
   }
 
+  /**
+   * Triggered when the client sets they name in the order
+   *
+   * @memberof ClientPage
+   */
   handleClientNameChange = async (e) => {
     this.setState({ clientName: e.target.value })
   }
@@ -107,7 +148,7 @@ class ClientPage extends React.Component {
             value={currentTab}
             indicatorColor="primary"
             textColor="primary"
-            onChange={this.handleChange}
+            onChange={this.handleTabChange}
             aria-label="disabled tabs example"
           >
             <Tab label="Desayuno" />
@@ -131,4 +172,4 @@ class ClientPage extends React.Component {
   }
 }
 
-export default ClientPage;
+export default withSnackbar(ClientPage);

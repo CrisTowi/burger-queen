@@ -9,6 +9,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import './index.scss';
 
 const TopBar = ({ onClickOrderButton, orderCount, location: { pathname } }) => {
+  /**
+   * Logout the user and redirect them to the login page
+   */
   const handleLogout = () => {
     firebase.auth().signOut();
     window.location.href = '/login';

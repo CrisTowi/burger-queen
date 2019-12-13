@@ -1,3 +1,4 @@
+// Breakfast menu collection
 export const breakfastMenu = [
   {
     name: 'Café americano',
@@ -17,6 +18,7 @@ export const breakfastMenu = [
   },
 ]
 
+// Rest of the day menu collection
 export const restOfheDayMenu = [
   {
     name: 'Hamburguesa de res (Simple)',

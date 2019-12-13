@@ -1,15 +1,19 @@
 // Libraries
 import React, { useState } from 'react';
-import { Modal, TextField, Button } from '@material-ui/core';
+import { Modal, TextField, Button, Typography } from '@material-ui/core';
+import { withSnackbar } from 'notistack';
 
 // Styles
 import './index.scss';
 
-const MenuItem = ({ name, price, type, onAddToOrder }) => {
+const MenuItem = ({ name, price, type, onAddToOrder, enqueueSnackbar }) => {
   const [isAdditionalsModalOpen, setIsAdditionalsModalOpen] = useState(false);
   const [eggPieces, setEggPieces] = useState(0);
   const [cheesePieces, setCheesePieces] = useState(0);
 
+  /**
+   * Handle add item to the menu and update the order state
+   */
   const handleAddMenuItem = () => {
     if (type && type === 'withAdditionals') {
       setIsAdditionalsModalOpen(true);
@@ -18,9 +22,15 @@ const MenuItem = ({ name, price, type, onAddToOrder }) => {
         name: name,
         price: price,
       });
+      enqueueSnackbar(`${name} fue agregado a la orden con éxito`, { variant: 'success' });
     }
   }
 
+  /**
+   * Triggered when user wants to add an item that can have additionals
+   * for example hamburgers. This function adds the 2 additionals in this
+   * case Huevo (eggs) and Queso (cheese)
+   */
   const handleAddMenuItemWithAdditionals = () => {
     const additionals = [];
 
@@ -40,6 +50,7 @@ const MenuItem = ({ name, price, type, onAddToOrder }) => {
       });
     }
 
+    // Add items to the order
     onAddToOrder({
       name: name,
       price: price,
@@ -48,6 +59,7 @@ const MenuItem = ({ name, price, type, onAddToOrder }) => {
     setIsAdditionalsModalOpen(false);
     setEggPieces(0);
     setCheesePieces(0);
+    enqueueSnackbar(`${name} fue agregado a la orden con éxito`, { variant: 'success' });
   }
 
   return (
@@ -65,6 +77,7 @@ const MenuItem = ({ name, price, type, onAddToOrder }) => {
         onClose={() => setIsAdditionalsModalOpen(false)}
       >
         <div className="modal-body">
+          <Typography variant="h5">Agregar extras</Typography>
           <div className="modal-text-form-container">
             <TextField
               onChange={(e) => setCheesePieces(Number(e.target.value))}
@@ -92,4 +105,4 @@ const MenuItem = ({ name, price, type, onAddToOrder }) => {
   );  
 };
 
-export default MenuItem;
+export default withSnackbar(MenuItem);

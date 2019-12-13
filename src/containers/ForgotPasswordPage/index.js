@@ -7,11 +7,21 @@ import { TextField, Button, Typography } from '@material-ui/core';
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState(null);
 
+  /**
+   * Triggered when email send button is clicked and send the
+   * reset password email and redirect the user to login page
+   */
   const handleEmailSend = async () => {
     await firebase.auth().sendPasswordResetEmail(email);
     window.location.href = '/login';
   }
 
+  /**
+   * Triggered when user updates the email addres in the text field
+   * and set the new state
+   * 
+   * @param {object} e 
+   */
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   }

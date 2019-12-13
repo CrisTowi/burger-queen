@@ -1,3 +1,7 @@
+/**
+ * Format date time to string using 12 hours format DD/MM/YYYY hh:mm:ss
+ * @param {Date} date 
+ */
 export const formatDate = (date) => {
   if (!date) return 'N/A';
 
@@ -11,5 +15,5 @@ export const formatDate = (date) => {
 
   const strTime = hours + ':' + minutes + ' ' + ampm;
 
-  return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+  return date.getDate() + '/' + date.getMonth()+1 + '/' + date.getFullYear() + '  ' + strTime;
 }

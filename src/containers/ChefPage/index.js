@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import firebase from 'firebase';
-
+import { withSnackbar } from 'notistack';
 
 // Components
 import TopBar from '../../components/TopBar';
@@ -27,6 +27,11 @@ class ClientPage extends React.Component {
     this.fetchAttendedOrders();
   }
 
+  /**
+   * Fetch orders from firebase database service and set state
+   *
+   * @memberof ClientPage
+   */
   fetchOrders = async () => {
     const response = await firebase.database().ref('/orders').once('value');
 
@@ -35,6 +40,11 @@ class ClientPage extends React.Component {
     });
   }
 
+  /**
+   * Fetch attended orders from firebase database service and set state
+   *
+   * @memberof ClientPage
+   */
   fetchAttendedOrders = async () => {
     const response = await firebase.database().ref('/attended_orders').once('value');
 
@@ -43,17 +53,36 @@ class ClientPage extends React.Component {
     });
   }
 
+  /**
+   * Triggers attend order function to set data in database and call the fetch
+   * function
+   *
+   * @memberof ClientPage
+   */
   handleAttendOrder = async (order) => {
-    const { orders } = this.state;
-    delete orders[order.id];
+    const { enqueueSnackbar } = this.props;
 
-    await firebase.database().ref('/attended_orders').push(order);
-    await firebase.database().ref('/orders').set(orders);
+    try {      
+      const { orders } = this.state;
+      delete orders[order.id];
+  
+      await firebase.database().ref('/attended_orders').push(order);
+      await firebase.database().ref('/orders').set(orders);
+  
+      await this.fetchOrders();
+      await this.fetchAttendedOrders();
 
-    await this.fetchOrders();
-    await this.fetchAttendedOrders();
+      enqueueSnackbar('¡Orden atentida con éxito!', { variant: 'success' });
+    } catch (error) {
+      enqueueSnackbar('Error al atender la orden, intente más tarde.', { variant: 'success' });
+    }
   }
 
+  /**
+   * Toggle order history visible component option
+   *
+   * @memberof ClientPage
+   */
   toggleOrderSelectOpen = () => {
     this.setState((prevState) => {
       const { isOrderHistoryOpen } = prevState;
@@ -80,4 +109,4 @@ class ClientPage extends React.Component {
   }
 }
 
-export default ClientPage;
+export default withSnackbar(ClientPage);

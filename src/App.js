@@ -8,6 +8,7 @@ import ClientPage from './containers/ClientPage';
 import ChefPage from './containers/ChefPage';
 import LoginPage from './containers/LoginPage';
 import ForgotPasswordPage from './containers/ForgotPasswordPage';
+import { SnackbarProvider } from 'notistack';
 
 // Styles
 import './App.css';
@@ -36,37 +37,39 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
-      <Switch>
-        {
-          firebaseInitialized ? (
-            <>
-              <Route path="/chef">
-                <ChefPage />
-              </Route>
-              <Route path="/client">
-                <ClientPage />
-              </Route>
-              <Route exact path="/">
-                <ClientPage />
-              </Route>
-            </>
-          ) : (
-            <>
-              <Route exact path="/login">
-                <LoginPage />
-              </Route>
-              <Route exact path="/forgot-password">
-                <ForgotPasswordPage />
-              </Route>
-              <Route exact path="/">
-                <LoginPage />
-              </Route>
-            </>
-          )
-        }
-      </Switch>
-    </BrowserRouter>
+    <SnackbarProvider>
+      <BrowserRouter>
+        <Switch>
+          {
+            firebaseInitialized ? (
+              <>
+                <Route path="/chef">
+                  <ChefPage />
+                </Route>
+                <Route path="/client">
+                  <ClientPage />
+                </Route>
+                <Route exact path="/">
+                  <ClientPage />
+                </Route>
+              </>
+            ) : (
+              <>
+                <Route exact path="/login">
+                  <LoginPage />
+                </Route>
+                <Route exact path="/forgot-password">
+                  <ForgotPasswordPage />
+                </Route>
+                <Route exact path="/">
+                  <LoginPage />
+                </Route>
+              </>
+            )
+          }
+        </Switch>
+      </BrowserRouter>
+    </SnackbarProvider>
   );
 }
 

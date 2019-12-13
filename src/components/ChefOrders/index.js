@@ -14,6 +14,9 @@ const ChefOrders = ({ orders, onAttendOrder }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   let componentOrders = [];
 
+  // Go for each of the keys in the orders object and
+  // creates a grid component with the orders for the chef
+  // to attend
   for (let key in orders) {
     componentOrders.push(
       <Grid item md={2} sm={4} xs={12}>
@@ -32,11 +35,20 @@ const ChefOrders = ({ orders, onAttendOrder }) => {
     );
   }
 
+  /**
+   * Triggered when a order is clicked and open the order
+   * modal to show the items ordered from the menu to attend
+   * @param {object} order 
+   */
   const handleClickOrder = (order) => {
     setIsOrderModalOpen(true);
     setSelectedOrder(order);
   }
 
+  /**
+   * Triggered when the chef clicks the button pointing the order
+   * has been attended
+   */
   const handleAttendedOrder = async () => {
     await onAttendOrder(selectedOrder);
     setIsOrderModalOpen(false);

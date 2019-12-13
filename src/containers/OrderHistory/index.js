@@ -8,6 +8,9 @@ import './index.scss';
 
 const OrderHistory = ({ isOpen, attendedOrders, onCloseOrderHistory }) => {
   const componentAttendedOrders = [];
+
+  // Takes the attended orders object and in a for loop
+  // creates a list of List items to show as components
   for (let key in attendedOrders) {
     componentAttendedOrders.push(
       <ListItem key={`attended-order-item-${key}`} button className={'drawer-item'}>
