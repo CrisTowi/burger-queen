@@ -22,6 +22,7 @@ const Order = ({
   onCloseOrder,
   onRegisterOrder,
   onClientNameChange,
+  onCommentsChange,
   clientName,
   loading, }) => {
   let totalPrice = 0;
@@ -73,6 +74,14 @@ const Order = ({
           type="text"
           label="Nombre del cliente"
           variant="outlined"
+          style={{ width: '100%', marginBottom: '15px' }} />
+        <TextField
+          onChange={onCommentsChange}
+          type="text-area"
+          label="¿Algún comentario o nota para el chef?"
+          variant="outlined"
+          multiline
+          rows="4"
           style={{ width: '100%', marginBottom: '15px' }} />
         <Button disabled={!clientName || orderState.length === 0 || loading} variant="contained" color="primary" onClick={onRegisterOrder}>
           Registrar orden

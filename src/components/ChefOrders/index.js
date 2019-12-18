@@ -73,10 +73,18 @@ const ChefOrders = ({ orders, onAttendOrder }) => {
               <Typography>Orden de {selectedOrder.client}</Typography>
               {
                 selectedOrder.order.map((item, index) => (
-                  <div style={{ display: 'block', width: '100%', margin: '15px' }}>
+                  <div key={`order-item-${index}`} style={{ display: 'block', width: '100%', margin: '15px' }}>
                     <Typography>{item.name}</Typography>
                   </div>
                 ))
+              }
+              {
+                selectedOrder.comments && (
+                  <div className={'modal-body-comments'}>
+                    <Typography>Notas del cliente: </Typography>
+                    <p className={'modal-body-comments-p'}>{selectedOrder.comments}</p>
+                  </div>
+                )
               }
               <div style={{ width: '100%' }}>
                 <Button

@@ -26,6 +26,7 @@ class ClientPage extends React.Component {
       currentTab: 0,
       orderState: [],
       clientName: null,
+      clientComments: null,
       isOrderStateOpen: false,
       loading: false,
     };
@@ -94,7 +95,7 @@ class ClientPage extends React.Component {
    * @memberof ClientPage
    */
   handleRegisterOrder = async () => {
-    const { orderState, clientName } = this.state;
+    const { orderState, clientName, clientComments } = this.state;
     const { enqueueSnackbar } = this.props;
     this.setState({ loading: true });
 
@@ -102,6 +103,7 @@ class ClientPage extends React.Component {
       await firebase.database().ref('/orders').push({
         createdAt: formatDate(new Date()),
         client: clientName,
+        comments: clientComments,
         order: orderState,
       });
 
@@ -110,7 +112,8 @@ class ClientPage extends React.Component {
         orderState: [],
         isOrderStateOpen: false,
         loading: false,
-        clientName: null
+        clientName: null,
+        clientComments: null,
       }, () => {
         enqueueSnackbar("¡Order agregada con éxito!", { variant: 'success' });
       });
@@ -120,12 +123,21 @@ class ClientPage extends React.Component {
   }
 
   /**
-   * Triggered when the client sets they name in the order
+   * Triggered when the client sets their name in the order
    *
    * @memberof ClientPage
    */
   handleClientNameChange = async (e) => {
     this.setState({ clientName: e.target.value })
+  }
+
+  /**
+   * Triggered when the client sets their comments in the order
+   *
+   * @memberof ClientPage
+   */
+  handleCommentsChange = async (e) => {
+    this.setState({ clientComments: e.target.value })
   }
 
   render() {
@@ -164,6 +176,7 @@ class ClientPage extends React.Component {
           orderState={orderState}
           clientName={clientName}
           onClientNameChange={this.handleClientNameChange}
+          onCommentsChange={this.handleCommentsChange}
           onCloseOrder={this.toggleOrderSelectOpen}
           onRemoveItem={this.handleRemoveOrderItem}
           onRegisterOrder={this.handleRegisterOrder} />
