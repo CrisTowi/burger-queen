@@ -7,6 +7,7 @@ import firebase from 'firebase';
 import ClientPage from './containers/ClientPage';
 import ChefPage from './containers/ChefPage';
 import LoginPage from './containers/LoginPage';
+import CouponsPage from './containers/CouponsPage';
 import ForgotPasswordPage from './containers/ForgotPasswordPage';
 import { SnackbarProvider } from 'notistack';
 
@@ -48,6 +49,9 @@ const App = () => {
                 </Route>
                 <Route path="/client">
                   <ClientPage />
+                </Route>
+                <Route path="/coupons">
+                  <CouponsPage />
                 </Route>
                 <Route exact path="/">
                   <ClientPage />

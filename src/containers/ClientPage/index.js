@@ -94,7 +94,7 @@ class ClientPage extends React.Component {
    *
    * @memberof ClientPage
    */
-  handleRegisterOrder = async () => {
+  handleRegisterOrder = async (coupon) => {
     const { orderState, clientName, clientComments } = this.state;
     const { enqueueSnackbar } = this.props;
     this.setState({ loading: true });
@@ -115,11 +115,36 @@ class ClientPage extends React.Component {
         clientName: null,
         clientComments: null,
       }, () => {
+        if (coupon) {
+          this.handleCouponUpdate(coupon);
+        }
+
         enqueueSnackbar("¡Order agregada con éxito!", { variant: 'success' });
       });
     } catch (error) {
       enqueueSnackbar("Error al agregar la orden, intente más tarde.", { variant: 'error' });
     }
+  }
+
+  handleCouponUpdate = async (coupon) => {
+    const response = await firebase.database().ref('/coupons').once('value');
+    const couponsObj = response.val();
+
+    for (let key in couponsObj) {
+      if (key === coupon.id) {
+        if (couponsObj[key].singleUse) {
+          delete couponsObj[key];
+        } else {
+          couponsObj[key].uses += 1;
+        }
+
+        firebase.database().ref('/coupons').set(couponsObj);
+      }
+    }
+
+    this.setState({
+      coupons: response.val(),
+    });
   }
 
   /**

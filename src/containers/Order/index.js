@@ -1,5 +1,7 @@
 // Libraries
-import React from 'react'
+import React, { useState } from 'react';
+import { withSnackbar } from 'notistack';
+import firebase from 'firebase';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import {
@@ -23,9 +25,38 @@ const Order = ({
   onRegisterOrder,
   onClientNameChange,
   onCommentsChange,
+  enqueueSnackbar,
   clientName,
   loading, }) => {
   let totalPrice = 0;
+  const [ couponKey, setCouponKey ] = useState('');
+  const [ coupon, setCoupon ] = useState(null);
+
+  
+  const handleValidateCoupon = async () => {
+    let foundCoupon = null;
+    const response = await firebase.database().ref('/coupons').once('value');
+    const coupons = response.val(); 
+
+    for (let key in coupons) {
+      if (coupons[key].key === couponKey) {
+        foundCoupon = key;
+      }
+    }
+
+    if (foundCoupon) {
+      setCoupon({
+        ...coupons[foundCoupon],
+        id: foundCoupon
+      });
+      enqueueSnackbar("Cupón agregado.", { variant: 'success' });
+    } else {
+      enqueueSnackbar("Cupón no válido. Trata con algún otro.", { variant: 'error' });
+      setCouponKey('');
+      setCoupon(null);
+    }
+
+  };
 
   return (
     <Drawer
@@ -68,6 +99,7 @@ const Order = ({
         </List>
         <Typography style={{ padding: '15px' }}>
           Total: ${totalPrice}
+          {coupon ? ` - ${(totalPrice * (0.01 * coupon.discount)).toFixed(2)} = ${(totalPrice - (totalPrice * (0.01 * coupon.discount)).toFixed(2))}` : ''}
         </Typography>
         <TextField
           onChange={onClientNameChange}
@@ -83,11 +115,30 @@ const Order = ({
           multiline
           rows="4"
           style={{ width: '100%', marginBottom: '15px' }} />
-        <Button disabled={!clientName || orderState.length === 0 || loading} variant="contained" color="primary" onClick={onRegisterOrder}>
+
+        <TextField
+          onChange={(e) => setCouponKey(e.target.value)}
+          type="text"
+          label="Introduce una clave de cupón"
+          variant="outlined" />
+        <Button
+          style={{ marginBottom: '15px' }}
+          variant="contained"
+          color="default"
+          disabled={!couponKey || couponKey.length < 3}
+          onClick={handleValidateCoupon}>
+          Validar cupón
+        </Button>
+
+        <Button
+          disabled={!clientName || orderState.length === 0 || loading}
+          variant="contained"
+          color="primary"
+          onClick={() => { onRegisterOrder(coupon) }}>
           Registrar orden
         </Button>
     </Drawer>
   )
 }
 
-export default Order;
+export default withSnackbar(Order);
